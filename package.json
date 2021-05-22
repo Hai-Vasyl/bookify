@@ -1,0 +1,18 @@
+{
+  "name": "bookshelf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Hai-Vasyl <hai.vasyl20@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js",
+    "format": "prettier js css --write"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "nodemon": "^2.0.7"
+  }
+}
