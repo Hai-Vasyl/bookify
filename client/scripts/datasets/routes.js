@@ -6,9 +6,11 @@ import Favourites from "../pages/Favourites.js";
 import Profile from "../pages/Profile.js";
 import Users from "../pages/Users.js";
 import Book from "../pages/Book.js";
+import Explore from "../pages/Explore.js";
 
 const routes = [
   { path: "/", title: "Home", component: Home },
+  { path: "/explore", title: "Explore", component: Explore },
   { path: "/about", title: "About", component: About },
   { path: "/users", title: "All users", component: Users },
   { path: "/volume/:bookid", title: "Book", component: Book },

@@ -1,7 +1,7 @@
 import { render } from "../main.js";
 
 const userDefault = {
-  uid: "some",
+  uid: "",
   firstname: "Vasyl",
   lastname: "Hai",
   email: "",

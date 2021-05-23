@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar.js";
 import Modal from "./components/Modal.js";
 import Button from "./components/Button.js";
-// import NavbarBottom from "./components/NavbarBottom.js";
+import NavbarBottom from "./components/NavbarBottom.js";
 // import FormAuth from "./components/FormAuth.js";
 import { store, setParam } from "./store/main.js";
 // import { getColor } from "./helpers/randomColor.js";
@@ -64,13 +64,7 @@ export const setPage = async () => {
 export const render = () => {
   const navbar = Navbar();
   const modal = Modal();
-  // const navbarBottom = NavbarBottom();
-  const navbarBottom = `<div>navbar bottom</div>`;
-  const button = Button({
-    data: "open-auth",
-    title: "Open Auth Form",
-    className: btn.prime,
-  });
+  const navbarBottom = NavbarBottom();
 
   document.getElementById("root").insertAdjacentHTML(
     "afterbegin",
@@ -83,7 +77,6 @@ export const render = () => {
       </div>
       <div class="bg-clear" id="bg-clear" ></div>
       ${navbar}
-      ${button}
       ${modal}
       <div class="page__content" id="content"></div>
       ${navbarBottom}

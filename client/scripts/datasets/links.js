@@ -5,7 +5,7 @@ const isAuth = !!store.user.uid;
 export const links = [
   {
     title: "Explore",
-    href: "/",
+    href: "/explore",
     icon: "explore",
   },
   {
