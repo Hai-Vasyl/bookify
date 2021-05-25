@@ -1,4 +1,4 @@
-import { store } from "../store/main.js";
+import { store } from "../context/main.js";
 
 const isAuth = !!store.user.uid;
 

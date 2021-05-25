@@ -1,5 +1,4 @@
 const Avatar = ({ user }) => {
-  console.log({ user });
   return user.ava
     ? `
     <img class="avatar" src="${user.ava}" alt="User avatar"/>

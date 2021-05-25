@@ -1,5 +1,14 @@
 import AuthForm from "../components/AuthForm.js";
 
+export const openAuthModal = () => {
+  const form = AuthForm();
+  openModal({ body: form, className: "modal__form-auth" });
+};
+
+export const closeAuthModal = () => {
+  closeModal({ className: "modal__form-auth" });
+};
+
 export const openModal = ({ body, className }) => {
   const bg = document.getElementById("bg");
   const modal = document.getElementById("modal");
@@ -22,13 +31,4 @@ export const closeModal = ({ className }) => {
   }
   modal.classList.remove("modal--active");
   bg.classList.remove("bg--active");
-};
-
-export const openAuthModal = () => {
-  const form = AuthForm();
-  openModal({ body: form, className: "modal__form-auth" });
-};
-
-export const closeAuthModal = () => {
-  closeModal({ className: "modal__form-auth" });
 };

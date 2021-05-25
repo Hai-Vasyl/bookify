@@ -6,16 +6,25 @@ const AuthForm = () => {
   const form = [
     { id: "firstname", label: "First name", hidden: true },
     { id: "lastname", label: "Last name", hidden: true },
-    { id: "email", label: "Email", type: "email" },
-    { id: "password", label: "Password", type: "password" },
+    { id: "email", label: "Email", type: "email", required: true },
+    { id: "password", label: "Password", type: "password", required: true },
   ];
 
-  const fields = form.reduce((acumulator, { id, label, type, hidden }) => {
-    return (
-      acumulator +
-      Field({ id, label, type, className: hidden && "field__hidden" })
-    );
-  }, "");
+  const fields = form.reduce(
+    (acumulator, { id, label, type, hidden, required }) => {
+      return (
+        acumulator +
+        Field({
+          id,
+          label,
+          type,
+          required,
+          className: hidden && "field__hidden",
+        })
+      );
+    },
+    "",
+  );
 
   const btnSubmit = Button({
     id: "auth-submit",

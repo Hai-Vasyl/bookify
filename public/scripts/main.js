@@ -1,22 +1,26 @@
 import Navbar from "./components/Navbar.js";
 import Modal from "./components/Modal.js";
-import Button from "./components/Button.js";
 import NavbarBottom from "./components/NavbarBottom.js";
 // import FormAuth from "./components/FormAuth.js";
-import { store, setParam } from "./store/main.js";
+import {
+  store,
+  setParam,
+  setUserData,
+  removeUserData,
+} from "./context/main.js";
 // import { getColor } from "./helpers/randomColor.js";
 // import { getParamQuery } from "./helpers/getParamsQuery.js";
 import { getRoutes } from "./datasets/routes.js";
 import {
-  openAuthModal,
-  closeAuthModal,
   flipFormAuth,
   redirectToPage,
   toggleDropDownMenu,
   closeAllPopups,
+  logoutUser,
 } from "./handlers/click.js";
+import { openAuthModal, closeAuthModal } from "./handlers/index.js";
 import { clearCurrentFieldError } from "./handlers/input.js";
-import { btn } from "./datasets/main.js";
+import { submitFormAuth } from "./handlers/submit.js";
 
 export const setPage = async () => {
   const path = location.pathname;
@@ -66,7 +70,13 @@ export const render = () => {
   const modal = Modal();
   const navbarBottom = NavbarBottom();
 
-  document.getElementById("root").insertAdjacentHTML(
+  const root = document.getElementById("root");
+
+  while (root.firstChild) {
+    root.removeChild(root.lastChild);
+  }
+
+  root.insertAdjacentHTML(
     "afterbegin",
     `
     <div class="page" id="page">
@@ -93,11 +103,36 @@ export const moveTo = (path) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  render();
+  // render();
+
+  await firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      const ref = firebase.firestore().collection("users").doc(user.uid);
+      try {
+        await ref.onSnapshot((snapshot) => {
+          const userSnapshot = snapshot.data();
+          setUserData({
+            uid: user.uid,
+            ...userSnapshot,
+          });
+        });
+      } catch (error) {
+        console.error(`Fetching registered user data error: ${error.message}`);
+      }
+    } else {
+      removeUserData();
+    }
+  });
 
   document.body.addEventListener("input", (event) => {
     if (event.target.matches(".field__input")) {
       clearCurrentFieldError(event);
+    }
+  });
+
+  document.body.addEventListener("submit", (event) => {
+    if (event.target.matches("#form-auth")) {
+      submitFormAuth(event);
     }
   });
 
@@ -114,6 +149,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleDropDownMenu(event);
     } else if (event.target.matches("#bg-clear")) {
       closeAllPopups();
+    } else if (event.target.matches("#btn-logout")) {
+      logoutUser();
     }
   });
 });

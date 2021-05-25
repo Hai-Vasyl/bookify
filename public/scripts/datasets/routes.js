@@ -1,4 +1,4 @@
-import { store } from "../store/main.js";
+import { store } from "../context/main.js";
 
 import Home from "../pages/Home.js";
 import About from "../pages/About.js";

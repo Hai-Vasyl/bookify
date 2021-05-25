@@ -1,9 +1,9 @@
-import { store } from "../store/main.js";
-import NavLink from "../components/NavLink.js";
-import NavButton from "../components/NavButton.js";
-import DropDownButton from "../components/DropDownButton.js";
-import UserInfoFiling from "../components/UserInfoFiling.js";
-import Button from "../components/Button.js";
+import { store } from "../context/main.js";
+import NavLink from "./NavLink.js";
+import NavButton from "./NavButton.js";
+import DropDownButton from "./DropDownButton.js";
+import UserInfoFiling from "./UserInfoFiling.js";
+import Button from "./Button.js";
 import { links as dataLinks } from "../datasets/links.js";
 import { btn } from "../datasets/main.js";
 

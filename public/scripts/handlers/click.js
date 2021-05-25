@@ -1,14 +1,5 @@
-import AuthForm from "../components/AuthForm.js";
-import { openModal, closeModal } from "./main.js";
+import { closeAuthModal } from "./index.js";
 import { moveTo } from "../main.js";
-
-export const openAuthModal = () => {
-  const form = AuthForm();
-  openModal({ body: form, className: "modal__form-auth" });
-};
-export const closeAuthModal = () => {
-  closeModal({ className: "modal__form-auth" });
-};
 
 export const closeAllPopups = () => {
   document.getElementById("bg-clear").classList.remove("bg-clear--active");
@@ -25,6 +16,8 @@ export const flipFormAuth = (event) => {
   const form = document.getElementById("form-auth");
   const firstname = document.getElementById("field-firstname");
   const lastname = document.getElementById("field-lastname");
+  const firstnameInput = firstname.querySelector("#field-input-firstname");
+  const lastnameInput = lastname.querySelector("#field-input-lastname");
   const btnSubmit = document.getElementById("btn-auth-submit");
   const title = document.getElementById("title-auth");
   const errors = form.getElementsByClassName("field__msg");
@@ -39,6 +32,8 @@ export const flipFormAuth = (event) => {
     form.classList.remove("login");
     firstname.classList.remove("field__hidden");
     lastname.classList.remove("field__hidden");
+    firstnameInput.required = true;
+    lastnameInput.required = true;
     btnSubmit.textContent = "Sign Up";
     event.target.textContent = "Log In";
     title.textContent = "Create Account";
@@ -46,6 +41,8 @@ export const flipFormAuth = (event) => {
     form.classList.add("login");
     firstname.classList.add("field__hidden");
     lastname.classList.add("field__hidden");
+    firstnameInput.required = false;
+    lastnameInput.required = false;
     btnSubmit.textContent = "Log In";
     event.target.textContent = "Sign Up";
     title.textContent = "Welcome Back!";
@@ -74,4 +71,8 @@ export const toggleDropDownMenu = (event) => {
     .querySelector("[data-menu-dropdown]")
     .classList.toggle("btn-dropdown__menu--active");
   bg.classList.toggle("bg-clear--active");
+};
+
+export const logoutUser = async () => {
+  await firebase.auth().signOut();
 };
