@@ -1,4 +1,6 @@
 import { closeAuthModal } from "./index.js";
+import { moveTo } from "../main.js";
+import { getParamQuery } from "../helpers/getParamsQuery.js";
 
 export const submitFormAuth = async (event) => {
   event.preventDefault();
@@ -24,4 +26,20 @@ export const submitFormAuth = async (event) => {
   } catch (error) {
     msg.textContent = error.message;
   }
+};
+
+export const submitFormSearch = (event) => {
+  event.preventDefault();
+
+  const search = document.querySelector("#input-search").value;
+  if (!search.trim()) {
+    return;
+  }
+  const filter = getParamQuery("filter") || "partial";
+  const type = getParamQuery("type") || "all";
+  const sort = getParamQuery("sort") || "relevance";
+
+  moveTo(
+    `/explore?page=1&filter=${filter}&type=${type}&sort=${sort}&search=${search}`,
+  );
 };

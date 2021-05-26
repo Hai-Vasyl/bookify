@@ -6,7 +6,7 @@ const FieldPicker = ({ label, id, options, selected }) => {
     return (
       acumulator +
       `<option class="picker__option" value="${item.value}" ${
-        isSelected && "selected"
+        isSelected ? "selected" : ""
       }>
        ${item.title}
       </option>`
@@ -16,7 +16,7 @@ const FieldPicker = ({ label, id, options, selected }) => {
   return `
     <div class="picker">
       <label class="picker__label" for="${id}">${label}</label>
-      <select class="btn ${btn.prime} picker__select" id="${id}" data-btn-select>
+      <select class="${btn.prime} picker__select" id="${id}" data-btn-select>
         ${optionItems}
       </select>
     </div>

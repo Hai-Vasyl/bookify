@@ -1,14 +1,7 @@
 import Navbar from "./components/Navbar.js";
 import Modal from "./components/Modal.js";
 import NavbarBottom from "./components/NavbarBottom.js";
-// import FormAuth from "./components/FormAuth.js";
-import {
-  store,
-  setParam,
-  setUserData,
-  removeUserData,
-} from "./context/main.js";
-// import { getColor } from "./helpers/randomColor.js";
+import { setParam, setUserData, removeUserData } from "./context/main.js";
 // import { getParamQuery } from "./helpers/getParamsQuery.js";
 import { getRoutes } from "./datasets/routes.js";
 import {
@@ -17,12 +10,22 @@ import {
   toggleDropDownMenu,
   closeAllPopups,
   logoutUser,
+  redirectToPageNumber,
+  redirectToPageArrow,
+  resetSearchForm,
 } from "./handlers/click.js";
+import { selectFilterSearchOption } from "./handlers/change.js";
 import { openAuthModal, closeAuthModal } from "./handlers/index.js";
-import { clearCurrentFieldError } from "./handlers/input.js";
-import { submitFormAuth } from "./handlers/submit.js";
+import {
+  clearCurrentFieldError,
+  resetSearchWithInput,
+} from "./handlers/input.js";
+import { submitFormAuth, submitFormSearch } from "./handlers/submit.js";
+import { updateComponent } from "./helpers/update.js";
 
 export const setPage = async () => {
+  const loader = document.getElementById("loader");
+  loader.classList.add("loader--active");
   const path = location.pathname;
   const routes = getRoutes();
   let route;
@@ -56,13 +59,9 @@ export const setPage = async () => {
   document.title = title;
   const page = await component();
 
-  const content = document.getElementById("content");
+  updateComponent(document.getElementById("content"), page);
 
-  while (content.firstChild) {
-    content.removeChild(content.lastChild);
-  }
-
-  content.insertAdjacentHTML("afterbegin", page);
+  setTimeout(() => loader.classList.remove("loader--active"), 500);
 };
 
 export const render = () => {
@@ -70,14 +69,8 @@ export const render = () => {
   const modal = Modal();
   const navbarBottom = NavbarBottom();
 
-  const root = document.getElementById("root");
-
-  while (root.firstChild) {
-    root.removeChild(root.lastChild);
-  }
-
-  root.insertAdjacentHTML(
-    "afterbegin",
+  updateComponent(
+    document.getElementById("root"),
     `
     <div class="page" id="page">
       <div class="bg" id="bg" >
@@ -103,8 +96,6 @@ export const moveTo = (path) => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // render();
-
   await firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
       const ref = firebase.firestore().collection("users").doc(user.uid);
@@ -124,15 +115,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  document.body.addEventListener("change", (event) => {
+    if (event.target.matches("[data-btn-select]")) {
+      selectFilterSearchOption(event);
+    }
+  });
+
   document.body.addEventListener("input", (event) => {
     if (event.target.matches(".field__input")) {
       clearCurrentFieldError(event);
+    } else if (event.target.matches("#input-search")) {
+      resetSearchWithInput(event);
     }
   });
 
   document.body.addEventListener("submit", (event) => {
     if (event.target.matches("#form-auth")) {
       submitFormAuth(event);
+    } else if (event.target.matches("#form-search")) {
+      submitFormSearch(event);
     }
   });
 
@@ -151,6 +152,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       closeAllPopups();
     } else if (event.target.matches("#btn-logout")) {
       logoutUser();
+    } else if (event.target.matches("[data-btn-page-number]")) {
+      redirectToPageNumber(event);
+    } else if (event.target.matches("[data-btn-page-arrow]")) {
+      redirectToPageArrow(event);
+    } else if (event.target.matches("#btn-reset-search")) {
+      resetSearchForm();
     }
   });
 });

@@ -2,6 +2,7 @@ import FieldPicker from "../components/FieldPicker.js";
 import BookCard from "../components/BookCard.js";
 import Pagination from "../components/Pagination.js";
 import Title from "../components/Title.js";
+import SearchForm from "../components/SearchForm.js";
 import { fetchData } from "../helpers/fetchData.js";
 import { getParamQuery } from "../helpers/getParamsQuery.js";
 
@@ -51,22 +52,48 @@ const Explore = async () => {
     selected: sort,
   });
 
-  console.log({ booksData });
   const books = booksData.items?.reduce((acumulator, item) => {
     return acumulator + BookCard({ info: item });
   }, "");
 
+  const total = booksData.totalItems;
   const pagination = Pagination({
     quantityItems: booksData.totalItems || 0,
     amountItemsPage: amountItems,
     currentPageNumber: page,
   });
 
+  const title = Title({
+    title: "Explore",
+    subtitle: "Search any books on your prefer",
+  });
+  const searchForm = SearchForm({ search });
+
   return `
-  <div>
+  <div class="explore">
+    <header class="explore__title" >
+        ${title}
+    </header>
+    <nav class="explore__nav">
+      <div class="explore__toolbar">
+        ${searchForm}
+        ${filterPicker}
+        ${typePicker}
+        ${sortPicker}
+        <div class="explore__total">
+          ${
+            total
+              ? `<span class="explore__total-text">Number of results:</span>
+          <span class="explore__results">${total}</span>`
+              : ""
+          }
+        </div>
+      </div>
+    </nav>
+    ${booksData.totalItems ? pagination : ""}
     ${
       booksData.totalItems
-        ? `<div class="books">
+        ? `<div class="explore__books">
             ${books} 
           </div>`
         : `<p class="plug" >Nothing found, try something else</p>`

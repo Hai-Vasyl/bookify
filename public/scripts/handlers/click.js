@@ -1,5 +1,6 @@
 import { closeAuthModal } from "./index.js";
 import { moveTo } from "../main.js";
+import { getParamQuery } from "../helpers/getParamsQuery.js";
 
 export const closeAllPopups = () => {
   document.getElementById("bg-clear").classList.remove("bg-clear--active");
@@ -75,4 +76,43 @@ export const toggleDropDownMenu = (event) => {
 
 export const logoutUser = async () => {
   await firebase.auth().signOut();
+};
+
+export const redirectToPageNumber = (event) => {
+  const filter = getParamQuery("filter") || "partial";
+  const type = getParamQuery("type") || "all";
+  const sort = getParamQuery("sort") || "relevance";
+  const search = getParamQuery("search");
+
+  const pageNumber = event.target.dataset.btnPageNumber;
+  moveTo(
+    `/explore?page=${pageNumber}&filter=${filter}&type=${type}&sort=${sort}${
+      search ? `&search=${search}` : ""
+    }`,
+  );
+};
+
+export const redirectToPageArrow = (event) => {
+  const filter = getParamQuery("filter") || "partial";
+  const type = getParamQuery("type") || "all";
+  const sort = getParamQuery("sort") || "relevance";
+  const page = getParamQuery("page") || 1;
+  const search = getParamQuery("search");
+
+  const isRight = !!+event.target.dataset.btnPageArrow;
+  moveTo(
+    `/explore?page=${
+      isRight ? +page + 1 : page - 1
+    }&filter=${filter}&type=${type}&sort=${sort}${
+      search ? `&search=${search}` : ""
+    }`,
+  );
+};
+
+export const resetSearchForm = () => {
+  const filter = getParamQuery("filter") || "partial";
+  const type = getParamQuery("type") || "all";
+  const sort = getParamQuery("sort") || "relevance";
+
+  moveTo(`/explore?page=1&filter=${filter}&type=${type}&sort=${sort}`);
 };
