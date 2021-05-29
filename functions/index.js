@@ -25,6 +25,27 @@ exports.createUser = functions.https.onCall(
   },
 );
 
+exports.responseBook = functions.https.onCall(
+  ({ owner, book, content, response }, { auth }) => {
+    if (!auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+    }
+    const record = { owner, book, content, date: new Date() };
+
+    return admin
+      .firestore()
+      .collection("responses")
+      .add(
+        response
+          ? {
+              ...record,
+              response,
+            }
+          : record,
+      );
+  },
+);
+
 // To add new record to db
 
 // admin.firestore().collection().add({

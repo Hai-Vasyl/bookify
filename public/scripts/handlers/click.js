@@ -1,6 +1,7 @@
 import { closeAuthModal } from "./index.js";
 import { moveTo } from "../main.js";
 import { getParamQuery } from "../helpers/getParamsQuery.js";
+import { updateComponent } from "../helpers/update.js";
 
 export const closeAllPopups = () => {
   document.getElementById("bg-clear").classList.remove("bg-clear--active");
@@ -115,4 +116,22 @@ export const resetSearchForm = () => {
   const sort = getParamQuery("sort") || "relevance";
 
   moveTo(`/explore?page=1&filter=${filter}&type=${type}&sort=${sort}`);
+};
+
+export const toggleFormReply = (event) => {
+  event.target.classList.toggle("response-item__btn--active");
+  const form = event.target.parentNode.querySelector(".response-item__form");
+  form.classList.toggle("response-item__form--active");
+  if (event.target.classList.contains("response-item__btn--active")) {
+    updateComponent(
+      event.target,
+      `<span class="material-icons-outlined btn__icon sealed">close</span>`,
+    );
+  } else {
+    updateComponent(
+      event.target,
+      `<span class="btn__title sealed">Reply</span>
+      <span class="material-icons-outlined btn__icon sealed">reply</span>`,
+    );
+  }
 };

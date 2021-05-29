@@ -13,6 +13,7 @@ import {
   redirectToPageNumber,
   redirectToPageArrow,
   resetSearchForm,
+  toggleFormReply,
 } from "./handlers/click.js";
 import { selectFilterSearchOption } from "./handlers/change.js";
 import { openAuthModal, closeAuthModal } from "./handlers/index.js";
@@ -20,7 +21,12 @@ import {
   clearCurrentFieldError,
   resetSearchWithInput,
 } from "./handlers/input.js";
-import { submitFormAuth, submitFormSearch } from "./handlers/submit.js";
+import {
+  submitFormAuth,
+  submitFormSearch,
+  submitFormResponse,
+  submitFormReply,
+} from "./handlers/submit.js";
 import { updateComponent } from "./helpers/update.js";
 
 export const setPage = async () => {
@@ -134,6 +140,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       submitFormAuth(event);
     } else if (event.target.matches("#form-search")) {
       submitFormSearch(event);
+    } else if (event.target.matches("#form-response")) {
+      submitFormResponse(event);
+    } else if (event.target.matches("[data-form-reply]")) {
+      submitFormReply(event);
     }
   });
 
@@ -142,6 +152,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       openAuthModal();
     } else if (event.target.matches("#bg")) {
       closeAuthModal();
+    } else if (event.target.matches("[data-btn-toggle-reply]")) {
+      toggleFormReply(event);
     } else if (event.target.matches("#btn-auth-flip")) {
       flipFormAuth(event);
     } else if (event.target.matches("[data-link]")) {

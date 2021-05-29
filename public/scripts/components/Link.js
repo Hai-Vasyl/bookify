@@ -1,6 +1,8 @@
-const Link = ({ title, href, className = "", icon }) => {
+const Link = ({ title, href, className = "", icon, isExternal }) => {
   return `
-    <a href="${href}" class="btn btn-link ${className}" data-link>
+    <a href="${href}" class="btn btn-link ${className}" ${
+    isExternal ? "" : "data-link"
+  }>
       ${
         icon
           ? `<span class="material-icons-outlined btn__icon sealed">${icon}</span>`
