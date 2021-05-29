@@ -1066,7 +1066,7 @@ select {
 
 /* Response item */
 
-@keyframes fade-scale-in {
+/* @keyframes fade-scale-in {
   from {
     transform: scale(0.9);
     opacity: 0;
@@ -1075,13 +1075,13 @@ select {
     transform: scale(1);
     opacity: 1;
   }
-}
+} */
 
 .response-item {
   display: flex;
   gap: 10px;
-  border-bottom: 1px dashed var(--main-dark);
-  /* background-color: var(--main-light); */
+  border-bottom: 1px solid var(--main-dark);
+  background-color: var(--main-light);
   padding: 10px;
   margin-bottom: 15px;
   width: 700px;
@@ -1089,6 +1089,12 @@ select {
   /* padding-bottom: 20px; */
   /* border-bottom: 1px solid var(--main-dark); */
   animation: fade-scale-in 1s ease;
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.08);
+}
+.response-item:hover .response-item__delete {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(0px, -50%);
 }
 .response-item__avatar {
   width: 55px;
@@ -1119,7 +1125,6 @@ select {
 .response-item__btn {
   font-size: 0.9em;
   padding: 6px 8px;
-  transition: 0.3s ease;
 }
 .response-item__btn--active {
   /* border: 3px solid red; */
@@ -1127,11 +1132,15 @@ select {
 .response-item__date {
   font-size: 0.9em;
 }
+.response-item__image {
+  position: relative;
+}
 .response-item__content {
   margin: 8px 0;
-  background-color: white;
+  border: 1px dashed var(--main-dark);
+  /* background-color: white; */
   padding: 5px;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  /* box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px; */
   /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; */
 }
@@ -1162,7 +1171,26 @@ select {
   visibility: visible;
   transform: translateY(0px) scale(1);
 }
+.response-item__delete {
+  position: absolute;
+  left: -44%;
+  top: 50%;
+  transform: translate(5px, -50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 0.8em;
+  padding: 4px;
+  background-color: var(--main-light);
+  visibility: hidden;
+  opacity: 0;
+}
+.response-item__delete:active {
+  top: 50%;
+  transform: translate(0px, -50%);
+}
 
 .response-item-answer {
-  border: 2px solid green;
+  border-left: 2px solid var(--accent);
+  margin-left: 40px;
 }

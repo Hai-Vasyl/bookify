@@ -46,6 +46,35 @@ exports.responseBook = functions.https.onCall(
   },
 );
 
+exports.toggleFavorites = functions.https.onCall(
+  async ({ owner, book }, { auth }) => {
+    if (!auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+    }
+
+    const doc = await admin
+      .firestore()
+      .collection("favorites")
+      .where("book", "==", book)
+      .where("owner", "==", owner)
+      .get();
+    if (doc.id) {
+      return admin.firestore().collection("favorites").doc(doc.id).delete();
+    }
+    return admin
+      .firestore()
+      .collection("favorites")
+      .add({ owner, book, private: false, date: new Date() });
+  },
+);
+
+exports.deleteResponse = functions.https.onCall(({ response }, { auth }) => {
+  if (!auth) {
+    throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+  }
+  return admin.firestore().collection("responses").doc(response).delete();
+});
+
 // To add new record to db
 
 // admin.firestore().collection().add({
