@@ -15,6 +15,8 @@ import {
   resetSearchForm,
   toggleFormReply,
   deleteResponseItem,
+  toggleFavoriteBook,
+  togglePrivateBook,
 } from "./handlers/click.js";
 import { selectFilterSearchOption } from "./handlers/change.js";
 import { openAuthModal, closeAuthModal } from "./handlers/index.js";
@@ -174,6 +176,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       resetSearchForm();
     } else if (event.target.matches("[data-btn-response-delete]")) {
       deleteResponseItem(event);
+    } else if (event.target.matches(".book__bookmark")) {
+      toggleFavoriteBook(event);
+    } else if (event.target.matches("[data-btn-check-private]")) {
+      togglePrivateBook(event);
     }
   });
 });

@@ -155,3 +155,35 @@ export const deleteResponseItem = async (event) => {
     loader.classList.remove("loader--active");
   }
 };
+
+export const toggleFavoriteBook = async () => {
+  const loader = document.getElementById("loader");
+  loader.classList.add("loader--active");
+  try {
+    const toggleFavorites = firebase
+      .functions()
+      .httpsCallable("toggleFavorites");
+    await toggleFavorites({
+      owner: store.user.uid,
+      book: store.param,
+    });
+  } catch (error) {
+    console.error(`Toggle favorite book error: ${error.message}`);
+  }
+  loader.classList.remove("loader--active");
+};
+
+export const togglePrivateBook = async (event) => {
+  const favorite = event.target.dataset.btnCheckPrivate;
+  const loader = document.getElementById("loader");
+  loader.classList.add("loader--active");
+  try {
+    const togglePrivate = firebase.functions().httpsCallable("togglePrivate");
+    await togglePrivate({ favorite });
+  } catch (error) {
+    console.error(
+      `Toggle private state of favorite book error: ${error.message}`,
+    );
+  }
+  loader.classList.remove("loader--active");
+};

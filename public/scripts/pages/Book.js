@@ -86,7 +86,26 @@ const Book = async () => {
     console.error(`Fetching book responses error: ${error.message}`);
   }
 
-  console.log({ bookData });
+  try {
+    await firebase
+      .firestore()
+      .collection("favorites")
+      .where("book", "==", store.param)
+      .where("owner", "==", store.user.uid)
+      .onSnapshot((snapshot) => {
+        const btn = document.querySelector(".book__bookmark span");
+        btn.parentNode.classList.remove("book__bookmark--active");
+        btn.textContent = "bookmark_add";
+        snapshot.forEach((doc) => {
+          if (doc.id) {
+            btn.parentNode.classList.add("book__bookmark--active");
+            btn.textContent = "bookmark_added";
+          }
+        });
+      });
+  } catch (error) {
+    console.error(`Fetching book state error: ${error.message}`);
+  }
 
   const categories = Section({
     label: "Categories",
@@ -172,8 +191,13 @@ const Book = async () => {
         bookData
           ? `
         <header class="book__header">
-          <div class="book__container">
+          <div class="wrapper book__container">
             <div class="book__preview">
+              <button class="book__bookmark">
+                <span class="material-icons-outlined sealed">
+                  bookmark_add
+                </span>
+              </button>
               <img src="${
                 bookData.volumeInfo.imageLinks.thumbnail
               }" alt="Preview book image" />
@@ -192,7 +216,7 @@ const Book = async () => {
             </div>
           </div>
         </header>
-        <section class="book__responses">
+        <section class="wrapper book__responses">
           ${responseForm}
           <div class="book__container-responses"></div>
         </section>

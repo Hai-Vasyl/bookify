@@ -38,7 +38,7 @@ const Response = ({
       <div class="response-item__image">
         <a href="/user/${
           user.id
-        }" data-link class="response-item__avatar">${userAva}</a>
+        }" class="response-item__avatar" data-link>${userAva}</a>
         ${store.user.uid === user.id ? btnDelete : ""}
       </div>
       <div class="response-item__body">

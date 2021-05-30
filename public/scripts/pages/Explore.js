@@ -71,11 +71,11 @@ const Explore = async () => {
 
   return `
   <div class="explore">
-    <header class="explore__title" >
+    <header class="wrapper explore__title" >
         ${title}
     </header>
     <nav class="explore__nav">
-      <div class="explore__toolbar">
+      <div class="wrapper explore__toolbar">
         ${searchForm}
         ${filterPicker}
         ${typePicker}
@@ -93,7 +93,7 @@ const Explore = async () => {
     ${booksData.totalItems ? pagination : ""}
     ${
       booksData.totalItems
-        ? `<div class="explore__books">
+        ? `<div class="wrapper explore__books">
             ${books} 
           </div>`
         : `<p class="plug" >Nothing found, try something else</p>`
