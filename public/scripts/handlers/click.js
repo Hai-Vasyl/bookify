@@ -2,6 +2,7 @@ import { closeAuthModal } from "./index.js";
 import { moveTo } from "../main.js";
 import { getParamQuery } from "../helpers/getParamsQuery.js";
 import { updateComponent } from "../helpers/update.js";
+import { store } from "../context/main.js";
 
 export const closeAllPopups = () => {
   document.getElementById("bg-clear").classList.remove("bg-clear--active");
@@ -134,4 +135,55 @@ export const toggleFormReply = (event) => {
       <span class="material-icons-outlined btn__icon sealed">reply</span>`,
     );
   }
+};
+
+export const deleteResponseItem = async (event) => {
+  const response = event.target.dataset.btnResponseDelete;
+  const owner = event.target.dataset.btnResponseOwner;
+
+  if (store.user.uid === owner) {
+    const loader = document.getElementById("loader");
+    loader.classList.add("loader--active");
+    try {
+      const deleteResponse = firebase
+        .functions()
+        .httpsCallable("deleteResponse");
+      await deleteResponse({ response });
+    } catch (error) {
+      console.error(`Deleting book response error: ${error.message}`);
+    }
+    loader.classList.remove("loader--active");
+  }
+};
+
+export const toggleFavoriteBook = async () => {
+  const loader = document.getElementById("loader");
+  loader.classList.add("loader--active");
+  try {
+    const toggleFavorites = firebase
+      .functions()
+      .httpsCallable("toggleFavorites");
+    await toggleFavorites({
+      owner: store.user.uid,
+      book: store.param,
+    });
+  } catch (error) {
+    console.error(`Toggle favorite book error: ${error.message}`);
+  }
+  loader.classList.remove("loader--active");
+};
+
+export const togglePrivateBook = async (event) => {
+  const favorite = event.target.dataset.btnCheckPrivate;
+  const loader = document.getElementById("loader");
+  loader.classList.add("loader--active");
+  try {
+    const togglePrivate = firebase.functions().httpsCallable("togglePrivate");
+    await togglePrivate({ favorite });
+  } catch (error) {
+    console.error(
+      `Toggle private state of favorite book error: ${error.message}`,
+    );
+  }
+  loader.classList.remove("loader--active");
 };

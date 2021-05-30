@@ -5,99 +5,107 @@ import Link from "../components/Link.js";
 import ResponseForm from "../components/ResponseForm.js";
 import Response from "../components/Response.js";
 import { btn } from "../datasets/main.js";
+import { updateComponent } from "../helpers/update.js";
+
+const setResponse = async ({
+  elem,
+  place,
+  params: { owner, content, id, date, isResponse },
+}) => {
+  const user = await firebase.firestore().collection("users").doc(owner).get();
+
+  let record = {
+    user: { id: user.id, ...user.data() },
+    content,
+    date,
+  };
+
+  if (isResponse) {
+    record = { ...record, id };
+  } else {
+    record = { ...record, dataId: id, className: "response-item-answer" };
+  }
+
+  elem.insertAdjacentHTML(place, Response(record));
+};
 
 const Book = async () => {
   const bookData = await fetchData(
     `https://www.googleapis.com/books/v1/volumes/${store.param}`,
   );
 
-  const responses = [
-    {
-      id: "1",
-      user: {
-        ava: "",
-        color: "#833EF3",
-        firstname: "Some",
-        lastname: "User",
-      },
-      content:
-        "Хотите научиться писать эффективные пользовательские интерфейсы при помощи React?",
-      date: new Date(),
-    },
-    {
-      id: "2",
-      user: {
-        ava: "",
-        color: "#833EF3",
-        firstname: "Some",
-        lastname: "User",
-      },
-      content:
-        "Хотите научиться писать эффективные пользовательские интерфейсы при помощи React?",
-      date: new Date(),
-    },
-    {
-      id: "4",
-      user: {
-        ava: "",
-        color: "#833EF3",
-        firstname: "Some",
-        lastname: "User",
-      },
-      content:
-        "Хотите научиться писать эффективные пользовательские интерфейсы при помощи React?",
-      date: new Date(),
-      response: "1",
-    },
-    {
-      id: "5",
-      user: {
-        ava: "",
-        color: "#833EF3",
-        firstname: "Some",
-        lastname: "User",
-      },
-      content:
-        "Хотите научиться писать эффективные пользовательские интерфейсы при помощи React?",
-      date: new Date(),
-      response: "1",
-    },
-    {
-      id: "3",
-      user: {
-        ava: "",
-        color: "#833EF3",
-        firstname: "Some",
-        lastname: "User",
-      },
-      content:
-        "Хотите научиться писать эффективные пользовательские интерфейсы при помощи React?",
-      date: new Date(),
-    },
-  ];
+  try {
+    await firebase
+      .firestore()
+      .collection("responses")
+      .where("book", "==", store.param)
+      .onSnapshot(async (snapshot) => {
+        const container = document.querySelector(".book__container-responses");
+        updateComponent(container, "");
 
-  // try {
-  //   await firebase
-  //     .firestore()
-  //     .collection("responses")
-  //     .where("book", "==", store.param)
-  //     .onSnapshot((snapshot) => {
-  //       snapshot.forEach(async (doc) => {
-  //         const data = doc.data();
-  //         const user = await firebase
-  //           .firestore()
-  //           .collection("users")
-  //           .doc(data.owner)
-  //           .get();
-  //         console.log("User document data:", user.data());
-  //         console.log(doc.id, " => ", data);
-  //       });
-  //     });
-  // } catch (error) {
-  //   console.error(`Fetching book responses error: ${error.message}`);
-  // }
+        await snapshot.forEach(async (doc) => {
+          const data = doc.data();
 
-  console.log({ bookData });
+          if (data.response) {
+            return;
+          }
+
+          await setResponse({
+            elem: container,
+            place: "afterbegin",
+            params: {
+              owner: data.owner,
+              content: data.content,
+              id: doc.id,
+              date: new Date(),
+              isResponse: true,
+            },
+          });
+
+          snapshot.forEach(async (item) => {
+            const reply = item.data();
+
+            if (doc.id === reply.response) {
+              const sibling = container.querySelector(`#${doc.id}`);
+
+              await setResponse({
+                elem: sibling,
+                place: "afterend",
+                params: {
+                  owner: reply.owner,
+                  content: reply.content,
+                  id: item.id,
+                  date: new Date(),
+                },
+              });
+            }
+          });
+        });
+      });
+  } catch (error) {
+    console.error(`Fetching book responses error: ${error.message}`);
+  }
+
+  try {
+    await firebase
+      .firestore()
+      .collection("favorites")
+      .where("book", "==", store.param)
+      .where("owner", "==", store.user.uid)
+      .onSnapshot((snapshot) => {
+        const btn = document.querySelector(".book__bookmark span");
+        btn.parentNode.classList.remove("book__bookmark--active");
+        btn.textContent = "bookmark_add";
+        snapshot.forEach((doc) => {
+          if (doc.id) {
+            btn.parentNode.classList.add("book__bookmark--active");
+            btn.textContent = "bookmark_added";
+          }
+        });
+      });
+  } catch (error) {
+    console.error(`Fetching book state error: ${error.message}`);
+  }
 
   const categories = Section({
     label: "Categories",
@@ -177,38 +185,19 @@ const Book = async () => {
   });
   const responseForm = ResponseForm();
 
-  const responseElems = responses.reduce(
-    (acumulator, { id, user, content, date, response }) => {
-      if (response) {
-        return acumulator;
-      }
-
-      let resItem = Response({ id, user, content, date });
-      responses.forEach((elem) => {
-        if (elem.response === id) {
-          console.log(elem.response === id, elem.response, id);
-          resItem += Response({
-            user: elem.user,
-            content: elem.content,
-            date: elem.date,
-            className: "response-item-answer",
-          });
-        }
-      });
-
-      return acumulator + resItem;
-    },
-    "",
-  );
-
   return `
     <div class="book" >
       ${
         bookData
           ? `
         <header class="book__header">
-          <div class="book__container">
+          <div class="wrapper book__container">
             <div class="book__preview">
+              <button class="book__bookmark">
+                <span class="material-icons-outlined sealed">
+                  bookmark_add
+                </span>
+              </button>
               <img src="${
                 bookData.volumeInfo.imageLinks.thumbnail
               }" alt="Preview book image" />
@@ -227,9 +216,9 @@ const Book = async () => {
             </div>
           </div>
         </header>
-        <section class="book__responses">
+        <section class="wrapper book__responses">
           ${responseForm}
-          ${responseElems}
+          <div class="book__container-responses"></div>
         </section>
         `
           : `<p class="plug" >Nothing found, try something else</p>`

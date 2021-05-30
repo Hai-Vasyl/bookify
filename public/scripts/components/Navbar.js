@@ -4,14 +4,14 @@ import NavButton from "./NavButton.js";
 import DropDownButton from "./DropDownButton.js";
 import UserInfoFiling from "./UserInfoFiling.js";
 import Button from "./Button.js";
-import { links as dataLinks } from "../datasets/links.js";
+import { getLinks } from "../datasets/links.js";
 import { btn } from "../datasets/main.js";
 
 const Navbar = () => {
   const { user } = store;
   const isAuth = !!user.uid;
 
-  const links = dataLinks.reduce(
+  const links = getLinks().reduce(
     (acumulator, { href, title, icon, isBottom, isBtn }) => {
       if (!isBottom) {
         if (isBtn) {
@@ -51,7 +51,7 @@ const Navbar = () => {
   return `
     <nav class="nav">
       <div class="nav__border"></div>
-      <div class="nav__links">
+      <div class="wrapper nav__links">
         <a class="nav__logo" href="/" data-link>
           <img class="sealed" src="/../../images/logo.svg" alt="Logotype" />
         </a>

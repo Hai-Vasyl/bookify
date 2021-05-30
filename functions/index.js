@@ -46,6 +46,52 @@ exports.responseBook = functions.https.onCall(
   },
 );
 
+exports.toggleFavorites = functions.https.onCall(
+  async ({ owner, book }, { auth }) => {
+    if (!auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+    }
+    const favorites = admin.firestore().collection("favorites");
+
+    const snapshot = await favorites
+      .where("book", "==", book)
+      .where("owner", "==", owner)
+      .get();
+
+    let docId = "";
+    snapshot.forEach((doc) => {
+      if (doc.id) {
+        docId = doc.id;
+      }
+    });
+
+    if (docId) {
+      return favorites.doc(docId).delete();
+    }
+    return favorites.add({ owner, book, private: false, date: new Date() });
+  },
+);
+
+exports.deleteResponse = functions.https.onCall(({ response }, { auth }) => {
+  if (!auth) {
+    throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+  }
+  return admin.firestore().collection("responses").doc(response).delete();
+});
+
+exports.togglePrivate = functions.https.onCall(
+  async ({ favorite }, { auth }) => {
+    if (!auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+    }
+
+    const favorites = admin.firestore().collection("favorites");
+    const doc = await favorites.doc(favorite).get();
+    return favorites.doc(favorite).update({
+      private: !doc.data().private,
+    });
+  },
+);
 // To add new record to db
 
 // admin.firestore().collection().add({

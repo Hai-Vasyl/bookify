@@ -1,9 +1,9 @@
-import { links as dataLinks } from "../datasets/links.js";
+import { getLinks } from "../datasets/links.js";
 import NavButton from "./NavButton.js";
 import NavLink from "./NavLink.js";
 
 const NavbarBottom = () => {
-  const links = dataLinks.reduce((acumulator, { icon, isBtn, href }) => {
+  const links = getLinks().reduce((acumulator, { icon, isBtn, href }) => {
     if (isBtn) {
       return (
         acumulator +
@@ -19,7 +19,7 @@ const NavbarBottom = () => {
 
   return `
   <nav class="nav nav-bottom">
-    <div class="nav__links nav-bottom__links">
+    <div class="wrapper nav__links nav-bottom__links">
       ${links}
     </div>
   </nav>

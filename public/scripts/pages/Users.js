@@ -1,6 +1,10 @@
-const Users = () => {
+import Title from "../components/Title.js";
+
+const Users = async () => {
   return `
-    <div>Users page</div>
+    <div class="users">
+      Title
+    </div>
   `;
 };
 

@@ -67,19 +67,6 @@ export const submitFormResponse = async (event) => {
 
   const content = event.target.querySelector(".response__input").value;
   addNewBookResponse({ event, content });
-  // if (!content.trim()) {
-  //   return;
-  // }
-
-  // loader.classList.add("loader--active");
-  // try {
-  //   const responseBook = firebase.functions().httpsCallable("responseBook");
-  //   await responseBook({ owner: store.user.uid, book: store.param, content });
-  //   event.target.reset();
-  // } catch (error) {
-  //   console.error(`Creating response for book error: ${error.message}`);
-  // }
-  // loader.classList.remove("loader--active");
 };
 
 export const submitFormReply = async (event) => {

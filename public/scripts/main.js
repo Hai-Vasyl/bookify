@@ -14,6 +14,9 @@ import {
   redirectToPageArrow,
   resetSearchForm,
   toggleFormReply,
+  deleteResponseItem,
+  toggleFavoriteBook,
+  togglePrivateBook,
 } from "./handlers/click.js";
 import { selectFilterSearchOption } from "./handlers/change.js";
 import { openAuthModal, closeAuthModal } from "./handlers/index.js";
@@ -28,6 +31,7 @@ import {
   submitFormReply,
 } from "./handlers/submit.js";
 import { updateComponent } from "./helpers/update.js";
+// import { deleteResponse } from "../../functions/index.js";
 
 export const setPage = async () => {
   const loader = document.getElementById("loader");
@@ -170,6 +174,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       redirectToPageArrow(event);
     } else if (event.target.matches("#btn-reset-search")) {
       resetSearchForm();
+    } else if (event.target.matches("[data-btn-response-delete]")) {
+      deleteResponseItem(event);
+    } else if (event.target.matches(".book__bookmark")) {
+      toggleFavoriteBook(event);
+    } else if (event.target.matches("[data-btn-check-private]")) {
+      togglePrivateBook(event);
     }
   });
 });
