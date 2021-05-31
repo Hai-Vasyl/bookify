@@ -1,4 +1,4 @@
-const Avatar = ({ user }) => {
+const Avatar = ({ user, middle, large }) => {
   return user.ava
     ? `
     <img class="avatar sealed" src="${user.ava}" alt="User avatar"/>
@@ -8,11 +8,15 @@ const Avatar = ({ user }) => {
       class="avatar sealed"
       style="background-color: ${user.color}"
     >
-      <span class='avatar__firstname sealed'>
-        ${user.firstname[0]}
-      </span>
-      <span class='avatar__lastname sealed'>
-        ${user.lastname[0]}
+      <span class="avatar__letters ${middle ? "avatar__letters--middle" : ""} ${
+        large ? "avatar__letters--large" : ""
+      } sealed">
+        <span class='avatar__letter avatar__firstname'>
+          ${user.firstname ? user.firstname[0] : ""}
+        </span>
+        <span class='avatar__letter avatar__lastname'>
+          ${user.lastname ? user.lastname[0] : ""}
+        </span>
       </span>
     </span>
   `;

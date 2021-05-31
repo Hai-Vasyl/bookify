@@ -57,7 +57,7 @@ const Book = async () => {
               owner: data.owner,
               content: data.content,
               id: doc.id,
-              date: new Date(),
+              date: data.date,
               isResponse: true,
             },
           });
@@ -75,7 +75,7 @@ const Book = async () => {
                   owner: reply.owner,
                   content: reply.content,
                   id: item.id,
-                  date: new Date(),
+                  date: reply.date,
                 },
               });
             }

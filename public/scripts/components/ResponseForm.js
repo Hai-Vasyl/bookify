@@ -17,10 +17,14 @@ const ResponseForm = () => {
     ? `
     <div class="response">
       <div>
-        <a href="/user/${user.uid}" data-link class="response__avatar">${userAva}</a>
+        <a href="/user/${user.uid}" data-link class="response__avatar ${
+        user.role === "admin" ? "admin" : ""
+      }">${userAva}</a>
       </div>
       <div class="response__body">
-        <a class="response__title" href="/user/${user.uid}" data-link>${user.firstname} ${user.lastname}</a>
+        <a class="response__title" href="/user/${user.uid}" data-link>${
+        user.firstname
+      } ${user.lastname}</a>
         <form id="form-response" class="response__form">
           <input class="response__input" type="text" placeholder="Input response here"  />
           <div class="response__btns">
