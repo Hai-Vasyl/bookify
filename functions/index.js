@@ -92,6 +92,41 @@ exports.togglePrivate = functions.https.onCall(
     });
   },
 );
+
+exports.updateUserInfo = functions.https.onCall(
+  ({ firstname, lastname }, { auth }) => {
+    if (!auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+    }
+    if (!firstname.trim() || !lastname.trim()) {
+      return;
+    }
+
+    return admin.firestore().collection("users").doc(auth.uid).update({
+      firstname,
+      lastname,
+    });
+  },
+);
+
+exports.updateUserAvatar = functions.https.onCall(
+  ({ image, isDeleting }, { auth }) => {
+    if (!auth) {
+      throw new functions.https.HttpsError("unauthenticated", "Access denied!");
+    }
+
+    if (isDeleting || image.trim()) {
+      return admin
+        .firestore()
+        .collection("users")
+        .doc(auth.uid)
+        .update({
+          ava: isDeleting ? "" : image,
+        });
+    }
+    return;
+  },
+);
 // To add new record to db
 
 // admin.firestore().collection().add({

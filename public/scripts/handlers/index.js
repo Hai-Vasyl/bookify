@@ -1,13 +1,5 @@
 import AuthForm from "../components/AuthForm.js";
-
-export const openAuthModal = () => {
-  const form = AuthForm();
-  openModal({ body: form, className: "modal__form-auth" });
-};
-
-export const closeAuthModal = () => {
-  closeModal({ className: "modal__form-auth" });
-};
+import UpdateUserAvaForm from "../components/UpdateUserAvaForm.js";
 
 export const openModal = ({ body, className }) => {
   const bg = document.getElementById("bg");
@@ -31,4 +23,18 @@ export const closeModal = ({ className }) => {
   }
   modal.classList.remove("modal--active");
   bg.classList.remove("bg--active");
+};
+
+export const openAuthModal = () => {
+  const form = AuthForm();
+  openModal({ body: form, className: "modal__form-auth" });
+};
+
+export const closeAuthModal = () => {
+  closeModal({ className: "modal__form-auth" });
+};
+
+export const openUserAvaUpdateModal = () => {
+  const form = UpdateUserAvaForm();
+  openModal({ body: form, className: "modal__form-auth" });
 };

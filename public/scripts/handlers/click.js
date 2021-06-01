@@ -210,3 +210,18 @@ export const flipFormUserEdit = (event) => {
     );
   }
 };
+
+export const deleteUserAva = async () => {
+  const loader = document.getElementById("loader");
+
+  loader.classList.add("loader--active");
+  try {
+    const updateUserAvatar = firebase
+      .functions()
+      .httpsCallable("updateUserAvatar");
+    await updateUserAvatar({ isDeleting: true });
+  } catch (error) {
+    console.error(`Deleting user avatar error: ${error.message}`);
+  }
+  loader.classList.remove("loader--active");
+};

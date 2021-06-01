@@ -18,9 +18,14 @@ import {
   toggleFavoriteBook,
   togglePrivateBook,
   flipFormUserEdit,
+  deleteUserAva,
 } from "./handlers/click.js";
 import { selectFilterSearchOption } from "./handlers/change.js";
-import { openAuthModal, closeAuthModal } from "./handlers/index.js";
+import {
+  openAuthModal,
+  closeAuthModal,
+  openUserAvaUpdateModal,
+} from "./handlers/index.js";
 import {
   clearCurrentFieldError,
   resetSearchWithInput,
@@ -30,10 +35,11 @@ import {
   submitFormSearch,
   submitFormResponse,
   submitFormReply,
+  submitFormUserEdit,
+  submitFormUserAva,
 } from "./handlers/submit.js";
 import { updateComponent } from "./helpers/update.js";
 import Footer from "./components/Footer.js";
-// import { deleteResponse } from "../../functions/index.js";
 
 export const setPage = async () => {
   const loader = document.getElementById("loader");
@@ -156,6 +162,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       submitFormResponse(event);
     } else if (event.target.matches("[data-form-reply]")) {
       submitFormReply(event);
+    } else if (event.target.matches("#form-user-edit")) {
+      submitFormUserEdit(event);
+    } else if (event.target.matches("#form-user-ava")) {
+      submitFormUserAva(event);
     }
   });
 
@@ -190,6 +200,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       togglePrivateBook(event);
     } else if (event.target.matches("#btn-user-edit-flip")) {
       flipFormUserEdit(event);
+    } else if (event.target.matches("[data-btn-update-user-ava]")) {
+      openUserAvaUpdateModal(event);
+    } else if (event.target.matches("[data-btn-delete-user-ava]")) {
+      deleteUserAva();
     }
   });
 });

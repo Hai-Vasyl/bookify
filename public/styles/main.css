@@ -70,7 +70,6 @@ a:hover {
 }
 .page__content {
   padding-top: 76px;
-  /* padding-bottom: 71px; */
   min-height: calc(100vh - 47px);
 }
 
@@ -107,6 +106,17 @@ a:hover {
   right: 25px;
   font-size: 2em;
   pointer-events: none;
+}
+
+@keyframes fade-in-card {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes fade-in {
@@ -276,16 +286,19 @@ a:hover {
 
 .avatar {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   object-fit: cover;
   color: #fff;
   border-radius: 50%;
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
   font-size: 0.8em;
   transition: 0.3s ease;
+  transform: scale(0.93);
 }
 .avatar__letters {
   position: absolute;
@@ -547,15 +560,12 @@ a:hover {
   display: block;
 }
 .hero__image img {
-  transform: scale(1.1);
+  transform: translateX(-10px) scale(1.1);
   /* filter: drop-shadow(0px 0px 120px rgba(0, 0, 0, 0.4)); */
 }
 .hero .form-search {
   margin-right: 65px;
 }
-
-/* @media screen and (max-width: 30em) {
-} */
 
 /* Search form */
 
@@ -730,6 +740,7 @@ a:hover {
     transparent,
     transparent
   );
+  animation: fade-in-card 1s ease;
 }
 .card:hover .card__check {
   opacity: 1;
@@ -850,6 +861,7 @@ a:hover {
   padding-bottom: 6px;
   text-align: center;
   position: relative;
+  overflow-wrap: anywhere;
 }
 .card__subtitle {
   display: block;
@@ -1279,6 +1291,7 @@ a:hover {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
+  padding: 20px;
 }
 
 /* Users page */
@@ -1289,6 +1302,7 @@ a:hover {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
+  padding: 20px;
 }
 
 /* User Card */
@@ -1298,7 +1312,7 @@ a:hover {
   border-left: 1px solid var(--main-dark);
   border-right: 1px solid var(--main-dark);
   background-image: linear-gradient(to top, transparent, white, transparent);
-  /* background-color: var(--main-light); */
+  animation: fade-in-card 1s ease;
 }
 .card-user:hover .card-user__delete {
   opacity: 1;
@@ -1396,6 +1410,7 @@ a:hover {
   font-size: 0.9em;
   gap: 7px;
   font-weight: bold;
+  overflow-wrap: anywhere;
 }
 .link-simple__icon {
   font-size: 1em;
@@ -1423,15 +1438,34 @@ a:hover {
 .profile__body {
   display: flex;
   gap: 35px;
+  align-items: flex-start;
 }
 .profile__image {
-  padding: 4px;
+  position: relative;
+}
+.profile__update-ava {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  z-index: 3;
+  transition: 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+.profile__update-ava > * {
+  width: 30px;
+  height: 30px;
 }
 .profile__admin {
   bottom: 15px;
   right: 17px;
   width: 50px;
   height: 50px;
+  z-index: 3;
 }
 .profile__lightbox {
   width: 260px;
@@ -1440,6 +1474,26 @@ a:hover {
   border: 1px solid var(--main-dark);
   border-radius: 50%;
   background-color: var(--main-light);
+}
+.profile__lightbox:hover .profile__update-ava {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+}
+.profile__lightbox::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  opacity: 0;
+  transition: 0.3s ease;
+}
+.profile__lightbox:hover::after {
+  opacity: 1;
 }
 .profile__wrapper-info {
   flex: 1;
@@ -1475,6 +1529,7 @@ a:hover {
   font-size: 1.2em;
 }
 .profile__bookshelf {
+  padding: 20px 0;
   grid-template-columns: repeat(3, 1fr);
 }
 .profile__form {
@@ -1545,6 +1600,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 5px;
   font-size: 0.8em;
   background-color: rgb(15, 15, 15);
@@ -1566,4 +1622,129 @@ a:hover {
 }
 .footer__icon {
   font-size: 1.2em;
+}
+
+@media screen and (max-width: 910px) {
+  .hero__image {
+    display: none;
+  }
+  .about__image {
+    display: none;
+  }
+  .about__info {
+    width: 100%;
+  }
+  .profile__bookshelf {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .profile__fields {
+    flex-direction: column;
+    gap: 0px;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .users__items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .explore__toolbar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .explore__books {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .nav__navbar {
+    display: none;
+  }
+  .nav-bottom {
+    display: flex;
+  }
+  .page__content {
+    min-height: calc(100vh - 71px);
+  }
+  .footer {
+    margin-bottom: 71px;
+  }
+  .bookshelf__books {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .book__container {
+    flex-direction: column;
+  }
+  .book__preview {
+    width: 47vw;
+    max-width: 355px;
+    padding-bottom: 74%;
+    margin: 0 auto;
+  }
+  .book__info {
+    flex: 1;
+  }
+  .book__sections {
+    padding-right: 0px;
+  }
+  .response-item-answer {
+    margin-left: 0px;
+  }
+  .profile__body {
+    flex-direction: column;
+  }
+  .profile__bookshelf {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .profile__image {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .users__items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .profile__bookshelf {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+
+@media screen and (max-width: 620px) {
+  .explore__toolbar {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .explore__books {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bookshelf__books {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .card-user__avatar {
+    font-size: 0.5em;
+  }
+  .card-user__admin {
+    bottom: 20px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+  }
+  .card-user__admin > * {
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .response-item__tools {
+    display: none;
+  }
 }
