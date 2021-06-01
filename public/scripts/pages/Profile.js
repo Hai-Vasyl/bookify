@@ -9,8 +9,8 @@ import Field from "../components/Field.js";
 const Profile = async () => {
   let user = store.user;
   const form = [
-    { id: "firstname", label: "First name", param: "firstname" },
-    { id: "lastname", label: "Last name", param: "lastname" },
+    { id: "first-name", label: "First name", param: "firstname" },
+    { id: "last-name", label: "Last name", param: "lastname" },
   ];
 
   if (store.param !== user.uid) {
@@ -27,7 +27,6 @@ const Profile = async () => {
     }
   }
 
-  console.log({ user });
   const fields = form.reduce((acumulator, { id, label, param }) => {
     return (
       acumulator +
@@ -67,15 +66,28 @@ const Profile = async () => {
     title: "Delete Account",
     isBtn: true,
   });
+  const updateUserAva = Button({
+    data: "update-user-ava",
+    className: `${btn.prime}`,
+    icon: "restart_alt",
+  });
+  const deleteUserAva = Button({
+    data: "delete-user-ava",
+    className: `${btn.second}`,
+    icon: "delete",
+  });
 
   return `
     <div class="profile">
       <header class="wrapper profile__header">${title}</header>
       <div class="wrapper profile__body">
         <div class="profile__image">
-          <button class="${
+          <div class="${
             user.role === "admin" ? "admin" : ""
           } profile__lightbox">
+          <div class="profile__update-ava">
+            ${updateUserAva}${user.ava ? deleteUserAva : ""}
+          </div>
             ${avatar}
             ${
               user.role === "admin"
@@ -86,7 +98,7 @@ const Profile = async () => {
                   </span>`
                 : ""
             }
-          </button>
+          </div>
         </div>
         <div class="profile__wrapper-info">
           <div class="profile__container">
@@ -99,7 +111,7 @@ const Profile = async () => {
             </div>
             ${
               store.user.uid === store.param
-                ? `<form class="profile__form">
+                ? `<form class="profile__form" id="form-user-edit">
                   <div class="profile__title-form">
                     Edit user information
                   </div>

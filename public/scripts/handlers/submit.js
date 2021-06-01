@@ -79,3 +79,42 @@ export const submitFormReply = async (event) => {
   await addNewBookResponse({ event, content, response });
   event.target.classList.toggle("response-item__form--active");
 };
+
+export const submitFormUserEdit = async (event) => {
+  event.preventDefault();
+  const info = document.querySelector(".profile__info");
+  const loader = document.getElementById("loader");
+  const firstname = document.querySelector("#field-input-first-name").value;
+  const lastname = document.querySelector("#field-input-last-name").value;
+
+  loader.classList.add("loader--active");
+  try {
+    const updateUserInfo = firebase.functions().httpsCallable("updateUserInfo");
+    await updateUserInfo({ firstname, lastname });
+    event.target.reset();
+    event.target.classList.remove("profile__form--active");
+    info.classList.add("profile__info--active");
+  } catch (error) {
+    console.error(`Updating user information error: ${error.message}`);
+  }
+  loader.classList.remove("loader--active");
+};
+
+export const submitFormUserAva = async (event) => {
+  event.preventDefault();
+  const loader = document.getElementById("loader");
+  const image = document.querySelector("#field-input-external-img").value;
+
+  loader.classList.add("loader--active");
+  try {
+    const updateUserAvatar = firebase
+      .functions()
+      .httpsCallable("updateUserAvatar");
+    await updateUserAvatar({ image });
+    event.target.reset();
+    closeAuthModal();
+  } catch (error) {
+    console.error(`Updating user avatar error: ${error.message}`);
+  }
+  loader.classList.remove("loader--active");
+};

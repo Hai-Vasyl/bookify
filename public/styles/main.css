@@ -109,6 +109,17 @@ a:hover {
   pointer-events: none;
 }
 
+@keyframes fade-in-card {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -276,16 +287,19 @@ a:hover {
 
 .avatar {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   object-fit: cover;
   color: #fff;
   border-radius: 50%;
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
   font-size: 0.8em;
   transition: 0.3s ease;
+  transform: scale(0.93);
 }
 .avatar__letters {
   position: absolute;
@@ -730,6 +744,7 @@ a:hover {
     transparent,
     transparent
   );
+  animation: fade-in-card 1s ease;
 }
 .card:hover .card__check {
   opacity: 1;
@@ -1298,7 +1313,7 @@ a:hover {
   border-left: 1px solid var(--main-dark);
   border-right: 1px solid var(--main-dark);
   background-image: linear-gradient(to top, transparent, white, transparent);
-  /* background-color: var(--main-light); */
+  animation: fade-in-card 1s ease;
 }
 .card-user:hover .card-user__delete {
   opacity: 1;
@@ -1423,15 +1438,34 @@ a:hover {
 .profile__body {
   display: flex;
   gap: 35px;
+  align-items: flex-start;
 }
 .profile__image {
-  padding: 4px;
+  position: relative;
+}
+.profile__update-ava {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  z-index: 3;
+  transition: 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+}
+.profile__update-ava > * {
+  width: 30px;
+  height: 30px;
 }
 .profile__admin {
   bottom: 15px;
   right: 17px;
   width: 50px;
   height: 50px;
+  z-index: 3;
 }
 .profile__lightbox {
   width: 260px;
@@ -1440,6 +1474,26 @@ a:hover {
   border: 1px solid var(--main-dark);
   border-radius: 50%;
   background-color: var(--main-light);
+}
+.profile__lightbox:hover .profile__update-ava {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  visibility: visible;
+}
+.profile__lightbox::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  opacity: 0;
+  transition: 0.3s ease;
+}
+.profile__lightbox:hover::after {
+  opacity: 1;
 }
 .profile__wrapper-info {
   flex: 1;
