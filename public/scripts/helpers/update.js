@@ -1,6 +1,6 @@
 export const updateComponent = (parent, component) => {
-  while (parent.firstChild) {
+  while (parent && parent.firstChild) {
     parent.removeChild(parent.lastChild);
   }
-  parent.insertAdjacentHTML("afterbegin", component);
+  parent && parent.insertAdjacentHTML("afterbegin", component);
 };

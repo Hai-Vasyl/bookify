@@ -29,7 +29,9 @@ export const submitFormAuth = async (event) => {
   const email = form.querySelector("#field-input-email").value;
   const password = form.querySelector("#field-input-password").value;
   const isLogin = form.classList.contains("login");
+  const loader = document.getElementById("loader");
 
+  loader.classList.add("loader--active");
   try {
     if (isLogin) {
       await firebase.auth().signInWithEmailAndPassword(email, password);
@@ -44,6 +46,7 @@ export const submitFormAuth = async (event) => {
   } catch (error) {
     msg.textContent = error.message;
   }
+  loader.classList.remove("loader--active");
 };
 
 export const submitFormSearch = (event) => {

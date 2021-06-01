@@ -1,4 +1,6 @@
 export const getDate = (date) => {
+  date = new Date(date.seconds * 1000);
+
   const months = [
     "January",
     "February",

@@ -18,6 +18,7 @@ const Response = ({
     title: "Reply",
     className: `${btn.second} response-item__btn`,
     icon: "reply",
+    disabled: !store.user.uid,
   });
   const btnReply = Button({
     data: "reply",
@@ -36,9 +37,9 @@ const Response = ({
   return `
     <div class="response-item ${className}" ${id ? `id="${id}"` : ""} >
       <div class="response-item__image">
-        <a href="/user/${
-          user.id
-        }" class="response-item__avatar" data-link>${userAva}</a>
+        <a href="/user/${user.id}" class="response-item__avatar ${
+    user.role === "admin" ? "admin" : ""
+  }" data-link>${userAva}</a>
         ${store.user.uid === user.id ? btnDelete : ""}
       </div>
       <div class="response-item__body">

@@ -11,16 +11,25 @@ const ResponseForm = () => {
     className: `${btn.prime} ${btn.backwards}`,
     icon: "send",
   });
-  const btnLogin = Button({ title: "Log In", className: btn.prime });
+  const btnLogin = Button({
+    data: "open-auth",
+    title: "Login",
+    className: `${btn.prime} nav__login`,
+    icon: "login",
+  });
 
   return user.uid
     ? `
     <div class="response">
       <div>
-        <a href="/user/${user.uid}" data-link class="response__avatar">${userAva}</a>
+        <a href="/user/${user.uid}" data-link class="response__avatar ${
+        user.role === "admin" ? "admin" : ""
+      }">${userAva}</a>
       </div>
       <div class="response__body">
-        <a class="response__title" href="/user/${user.uid}" data-link>${user.firstname} ${user.lastname}</a>
+        <a class="response__title" href="/user/${user.uid}" data-link>${
+        user.firstname
+      } ${user.lastname}</a>
         <form id="form-response" class="response__form">
           <input class="response__input" type="text" placeholder="Input response here"  />
           <div class="response__btns">
@@ -32,7 +41,7 @@ const ResponseForm = () => {
   `
     : `
     <div class="response-msg">
-      <span class="response-msg__icon" class="material-icons-outlined">
+      <span class="material-icons-outlined response-msg__icon">
         error_outline
       </span>
       <div class="response-msg__title">Please login to response</div>

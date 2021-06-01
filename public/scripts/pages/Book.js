@@ -42,7 +42,6 @@ const Book = async () => {
       .onSnapshot(async (snapshot) => {
         const container = document.querySelector(".book__container-responses");
         updateComponent(container, "");
-
         await snapshot.forEach(async (doc) => {
           const data = doc.data();
 
@@ -57,7 +56,7 @@ const Book = async () => {
               owner: data.owner,
               content: data.content,
               id: doc.id,
-              date: new Date(),
+              date: data.date,
               isResponse: true,
             },
           });
@@ -75,7 +74,7 @@ const Book = async () => {
                   owner: reply.owner,
                   content: reply.content,
                   id: item.id,
-                  date: new Date(),
+                  date: reply.date,
                 },
               });
             }
@@ -109,7 +108,7 @@ const Book = async () => {
 
   const categories = Section({
     label: "Categories",
-    body: bookData.volumeInfo.categories.reduce((acumulator, item, index) => {
+    body: bookData.volumeInfo.categories?.reduce((acumulator, item, index) => {
       const elem = !index ? item : ` ${item}`;
       return acumulator + elem;
     }, ""),
@@ -120,7 +119,7 @@ const Book = async () => {
   });
   const authors = Section({
     label: "Authors",
-    body: bookData.volumeInfo.authors.reduce((acumulator, item, index) => {
+    body: bookData.volumeInfo.authors?.reduce((acumulator, item, index) => {
       const elem = !index ? item : ` ${item}`;
       return acumulator + elem;
     }, ""),
@@ -143,7 +142,7 @@ const Book = async () => {
   });
   const price = Section({
     label: "Price",
-    body: `${bookData.saleInfo.listPrice.amount} ${bookData.saleInfo.listPrice.currencyCode}`,
+    body: `${bookData.saleInfo?.listPrice?.amount} ${bookData.saleInfo?.listPrice?.currencyCode}`,
   });
 
   let stars = [];
@@ -165,14 +164,14 @@ const Book = async () => {
 
   const btnRead = Link({
     title: "Read",
-    href: bookData.accessInfo.webReaderLink,
+    href: bookData.accessInfo?.webReaderLink,
     className: btn.prime,
     icon: "library_books",
     isExternal: true,
   });
   const btnBuy = Link({
     title: "Buy",
-    href: bookData.saleInfo.buyLink,
+    href: bookData.saleInfo?.buyLink,
     className: btn.second,
     icon: "shopping_cart",
     isExternal: true,
@@ -198,9 +197,11 @@ const Book = async () => {
                   bookmark_add
                 </span>
               </button>
-              <img src="${
-                bookData.volumeInfo.imageLinks.thumbnail
-              }" alt="Preview book image" />
+              ${
+                bookData.volumeInfo.imageLinks?.thumbnail
+                  ? `<img src="${bookData.volumeInfo.imageLinks?.thumbnail}" alt="Preview book image" />`
+                  : `<span class="material-icons-outlined card__plug-image">auto_stories</span>`
+              }
             </div>
             <div class="book__info">
               <div class="book__sections">

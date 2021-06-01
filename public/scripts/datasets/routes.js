@@ -8,14 +8,26 @@ import Users from "../pages/Users.js";
 import Book from "../pages/Book.js";
 import Explore from "../pages/Explore.js";
 
+import { getFavoritesBooksByOwner } from "../sevices/favorites.js";
+
 const routes = [
   { path: "/", title: "Home", component: Home },
   { path: "/explore", title: "Explore", component: Explore },
   { path: "/about", title: "About", component: About },
   { path: "/users", title: "All users", component: Users },
   { path: "/volume/:bookid", title: "Book", component: Book },
-  { path: "/favourites/:userid", title: "Favourites", component: Favourites },
-  { path: "/user/:userid", title: "My profile", component: Profile },
+  {
+    path: "/favourites/:userid",
+    title: "Favourites",
+    component: Favourites,
+    handlers: [getFavoritesBooksByOwner],
+  },
+  {
+    path: "/user/:userid",
+    title: "My profile",
+    component: Profile,
+    handlers: [getFavoritesBooksByOwner],
+  },
 ];
 
 export const getRoutes = () => {
