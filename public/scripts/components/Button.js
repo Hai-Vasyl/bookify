@@ -1,8 +1,8 @@
-const Button = ({ id, data, title, className = "", icon, isBtn }) => {
+const Button = ({ id, data, title, className = "", icon, isBtn, disabled }) => {
   return `
     <button ${isBtn ? `type="button"` : ""} class="btn ${className}" ${
     data ? `data-btn-${data}` : ""
-  } ${id ? `id="btn-${id}"` : ""}>
+  } ${id ? `id="btn-${id}"` : ""} ${disabled ? "disabled" : ""}>
       ${
         icon
           ? `<span class="material-icons-outlined btn__icon sealed">${icon}</span>`

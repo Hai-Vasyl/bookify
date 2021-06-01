@@ -18,6 +18,7 @@ const Response = ({
     title: "Reply",
     className: `${btn.second} response-item__btn`,
     icon: "reply",
+    disabled: !store.user.uid,
   });
   const btnReply = Button({
     data: "reply",

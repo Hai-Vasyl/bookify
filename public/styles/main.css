@@ -70,8 +70,8 @@ a:hover {
 }
 .page__content {
   padding-top: 76px;
-  padding-bottom: 71px;
-  min-height: 100vh;
+  /* padding-bottom: 71px; */
+  min-height: calc(100vh - 47px);
 }
 
 .bg,
@@ -227,7 +227,6 @@ a:hover {
   align-items: center;
   justify-content: center;
   color: var(--accent-dark);
-  font-weight: bold;
 }
 .btn:active {
   transform: scale(0.95);
@@ -342,7 +341,7 @@ a:hover {
 .nav__navbar {
   align-items: center;
   justify-content: center;
-  display: none;
+  display: flex;
   gap: 5px;
 }
 .nav__link {
@@ -486,6 +485,7 @@ a:hover {
   border-bottom: none;
   border-top: 1px solid var(--main-dark);
   box-shadow: rgba(0, 0, 0, 0.08) 0px -4px 12px;
+  display: none;
 }
 .nav-bottom__links {
   gap: 5px;
@@ -505,7 +505,7 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  top: 50%;
+  top: 51%;
   left: 50%;
   transform: translate(-50%, -50%);
   gap: 25px;
@@ -544,15 +544,18 @@ a:hover {
 }
 .hero__image {
   width: 55%;
-  display: none;
+  display: block;
 }
 .hero__image img {
-  transform: scale(1.2);
-  filter: drop-shadow(0px 0px 120px rgba(0, 0, 0, 0.4));
+  transform: scale(1.1);
+  /* filter: drop-shadow(0px 0px 120px rgba(0, 0, 0, 0.4)); */
 }
 .hero .form-search {
   margin-right: 65px;
 }
+
+/* @media screen and (max-width: 30em) {
+} */
 
 /* Search form */
 
@@ -984,6 +987,7 @@ a:hover {
   width: 27vw;
   max-width: 265px;
   padding-bottom: 40%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .book__bookmark {
   position: absolute;
@@ -1011,14 +1015,12 @@ a:hover {
   right: 0;
   bottom: 0;
   width: 100%;
+  padding: 5px;
   height: 100%;
   filter: drop-shadow(rgba(0, 0, 0, 0.3) 0px 10px 30px);
 }
 .book__info {
   flex: 1;
-  /* height: 376px;
-  overflow: auto;
-  position: relative; */
 }
 .book__sections {
   padding-right: 20px;
@@ -1128,6 +1130,10 @@ a:hover {
 }
 
 .response-msg {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 20px 0;
 }
 .response-msg__icon {
 }
@@ -1270,8 +1276,6 @@ a:hover {
 .bookshelf {
 }
 .bookshelf__books {
-}
-.bookshelf__books {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
@@ -1296,7 +1300,7 @@ a:hover {
   background-image: linear-gradient(to top, transparent, white, transparent);
   /* background-color: var(--main-light); */
 }
-.card-user:hover .card-user__delete{
+.card-user:hover .card-user__delete {
   opacity: 1;
   visibility: visible;
   transform: translateY(0px);
@@ -1373,25 +1377,193 @@ a:hover {
   margin-bottom: 10px;
   display: inline-block;
 }
-.card-user__info {
-  text-decoration: none;
-  color: black;
-  display: flex;
-  align-items: center;
-  padding: 3px 0;
-  font-size: 0.9em;
-  gap: 7px;
-  font-weight: bold;
-}
-.card-user__icon {
-  font-size: 1em;
-}
-.card-user__label {
-}
 .card-user__date {
   border-top: 1px solid var(--main-dark);
   font-size: 0.8em;
   text-align: center;
   display: block;
   padding: 4px 0;
+}
+
+/* Link simple */
+
+.link-simple {
+  text-decoration: none;
+  color: black;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 0;
+  font-size: 0.9em;
+  gap: 7px;
+  font-weight: bold;
+}
+.link-simple__icon {
+  font-size: 1em;
+}
+.link-simple__label {
+}
+
+/* User Profile Page */
+
+@keyframes fade-scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.profile {
+}
+.profile__header {
+}
+.profile__body {
+  display: flex;
+  gap: 35px;
+}
+.profile__image {
+  padding: 4px;
+}
+.profile__admin {
+  bottom: 15px;
+  right: 17px;
+  width: 50px;
+  height: 50px;
+}
+.profile__lightbox {
+  width: 260px;
+  height: 260px;
+  position: relative;
+  border: 1px solid var(--main-dark);
+  border-radius: 50%;
+  background-color: var(--main-light);
+}
+.profile__wrapper-info {
+  flex: 1;
+}
+.profile__container {
+  position: relative;
+}
+.profile__info,
+.profile__form {
+  animation: fade-scale-in 0.3s ease;
+}
+.profile__info {
+  display: none;
+}
+.profile__info--active {
+  display: block;
+}
+.profile__username {
+  display: inline-block;
+  font-size: 2.5em;
+}
+.profile__email {
+}
+.profile__books {
+  margin-top: 25px;
+  border-top: 1px solid var(--main-dark);
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+.profile__title {
+  display: inline-block;
+  padding-bottom: 15px;
+  font-size: 1.2em;
+}
+.profile__bookshelf {
+  grid-template-columns: repeat(3, 1fr);
+}
+.profile__form {
+  background-color: var(--main-light);
+  display: none;
+}
+.profile__form--active {
+  display: block;
+}
+.profile__title-form {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  border-bottom: 1px solid var(--main-dark);
+}
+.profile__fields {
+  padding: 20px;
+  padding-bottom: 10px;
+  display: flex;
+  gap: 20px;
+}
+.profile__fields > * {
+  flex: 1;
+}
+.profile__btns {
+  padding: 20px;
+  padding-top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.profile__btn-flip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  z-index: 3;
+}
+
+/* About Page */
+
+.about {
+  padding-bottom: 40px;
+}
+.about__body {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+.about__info {
+  width: 55%;
+  border-top: 1px solid var(--main-dark);
+  align-self: stretch;
+  display: flex;
+  padding: 30px 0;
+  font-size: 1.1em;
+}
+.about__info > P {
+  margin: auto;
+}
+.about__image {
+  flex: 1;
+}
+
+/* Footer */
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.8em;
+  background-color: rgb(15, 15, 15);
+  color: white;
+  padding: 13px 0;
+  position: relative;
+  z-index: 3;
+}
+.footer__border {
+  position: relative;
+  z-index: 3;
+  height: 5px;
+  background-image: linear-gradient(90deg, var(--minor), var(--accent-dark));
+}
+.footer__link {
+  text-decoration: none;
+  color: var(--minor);
+  font-weight: bold;
+}
+.footer__icon {
+  font-size: 1.2em;
 }

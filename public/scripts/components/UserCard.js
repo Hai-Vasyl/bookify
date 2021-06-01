@@ -1,15 +1,27 @@
 import Avatar from "./Avatar.js";
 import { getDate } from "../helpers/convertDate.js";
 import Button from "./Button.js";
+import LinkSimple from "./LinkSimple.js";
 import { btn } from "../datasets/main.js";
 import { store } from "../context/main.js";
 
 const UserCard = ({ info }) => {
   const avatar = Avatar({ user: info, large: true });
   const btnDelete = Button({
-    data: "delete-user",
+    data: `delete-user="${info.id}"`,
     className: `${btn.prime} card-user__delete`,
     icon: "delete",
+  });
+  const linkEmail = LinkSimple({
+    href: `mailto:${info.email}`,
+    icon: "alternate_email",
+    label: info.email,
+    isExternal: true,
+  });
+  const linkBookshelf = LinkSimple({
+    href: `/favourites/${info.id}`,
+    icon: "bookmarks",
+    label: "Bookshelf",
   });
 
   return `
@@ -41,18 +53,8 @@ const UserCard = ({ info }) => {
     info.firstname
   } ${info.lastname}</a>
         </div>
-        <a href="mailto:${info.email}" class="card-user__info">
-          <span class="material-icons-outlined card-user__icon">
-            alternate_email
-          </span>
-          <span class="card-user__label">${info.email}</span>
-        </a>
-        <a class="card-user__info" href="/favourites/${info.id}" data-link>
-          <span class="material-icons-outlined card-user__icon sealed">
-            bookmarks
-          </span>
-          <span class="card-user__label sealed" >Bookshelf</span>
-        </a>
+        ${linkEmail}
+        ${linkBookshelf}
       </div>
       <span class="card-user__date">
         ${getDate(info.date)}

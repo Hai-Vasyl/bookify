@@ -15,7 +15,9 @@ const Explore = async () => {
   const amountItems = 24;
 
   const booksData = await fetchData(
-    `https://www.googleapis.com/books/v1/volumes?q=${search}&filter=${filter}&printType=${type}&orderBy=${sort}&projection=lite&startIndex=${
+    `https://www.googleapis.com/books/v1/volumes?q=${
+      search || "Programming"
+    }&filter=${filter}&printType=${type}&orderBy=${sort}&projection=lite&startIndex=${
       page - 1
     }&maxResults=${amountItems}`,
   );

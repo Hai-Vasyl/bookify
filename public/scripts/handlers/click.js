@@ -3,6 +3,7 @@ import { moveTo } from "../main.js";
 import { getParamQuery } from "../helpers/getParamsQuery.js";
 import { updateComponent } from "../helpers/update.js";
 import { store } from "../context/main.js";
+import { getFavoritesBooksByOwner } from "../sevices/favorites.js";
 
 export const closeAllPopups = () => {
   document.getElementById("bg-clear").classList.remove("bg-clear--active");
@@ -180,10 +181,32 @@ export const togglePrivateBook = async (event) => {
   try {
     const togglePrivate = firebase.functions().httpsCallable("togglePrivate");
     await togglePrivate({ favorite });
+    await getFavoritesBooksByOwner();
   } catch (error) {
     console.error(
       `Toggle private state of favorite book error: ${error.message}`,
     );
   }
   loader.classList.remove("loader--active");
+};
+
+export const flipFormUserEdit = (event) => {
+  const btn = event.target;
+  const info = document.querySelector(".profile__info");
+  const form = document.querySelector(".profile__form");
+  info.classList.toggle("profile__info--active");
+  form.classList.toggle("profile__form--active");
+  btn.classList.toggle("default");
+
+  if (btn.classList.contains("default")) {
+    updateComponent(
+      btn,
+      `<span class="material-icons-outlined btn__icon sealed">edit</span>`,
+    );
+  } else {
+    updateComponent(
+      btn,
+      `<span class="material-icons-outlined btn__icon sealed">close</span>`,
+    );
+  }
 };

@@ -17,6 +17,7 @@ import {
   deleteResponseItem,
   toggleFavoriteBook,
   togglePrivateBook,
+  flipFormUserEdit,
 } from "./handlers/click.js";
 import { selectFilterSearchOption } from "./handlers/change.js";
 import { openAuthModal, closeAuthModal } from "./handlers/index.js";
@@ -31,6 +32,7 @@ import {
   submitFormReply,
 } from "./handlers/submit.js";
 import { updateComponent } from "./helpers/update.js";
+import Footer from "./components/Footer.js";
 // import { deleteResponse } from "../../functions/index.js";
 
 export const setPage = async () => {
@@ -64,12 +66,16 @@ export const setPage = async () => {
     setParam(param);
   }
 
-  const { component, title } = route;
+  const { component, title, handlers } = route;
 
   document.title = title;
   const page = await component();
 
   updateComponent(document.getElementById("content"), page);
+
+  handlers?.forEach(async (func) => {
+    await func();
+  });
 
   setTimeout(() => loader.classList.remove("loader--active"), 500);
 };
@@ -77,6 +83,7 @@ export const setPage = async () => {
 export const render = () => {
   const navbar = Navbar();
   const modal = Modal();
+  const footer = Footer();
   const navbarBottom = NavbarBottom();
 
   updateComponent(
@@ -92,6 +99,7 @@ export const render = () => {
       ${navbar}
       ${modal}
       <div class="page__content" id="content"></div>
+      ${footer}
       ${navbarBottom}
     </div>
   `,
@@ -180,6 +188,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       toggleFavoriteBook(event);
     } else if (event.target.matches("[data-btn-check-private]")) {
       togglePrivateBook(event);
+    } else if (event.target.matches("#btn-user-edit-flip")) {
+      flipFormUserEdit(event);
     }
   });
 });
